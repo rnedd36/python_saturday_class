@@ -20,32 +20,20 @@ floor_3 = ['stairs down', 'sword', 'magic stones', 'monster', 'boss']
 
 player_room = 0
 player_floor = floor_1
-current_floor = 'floor 1'
-current_turn = 'straight'
+current_floor = 'Floor 1'
 
 player_won = False
 player_alive = True
-flag = ""
+
 bookbag = []
 
 while player_alive and player_won == False:
 
-    if (current_turn in ('grab', 'fight')):
-        current_turn = 'remain'
+    print("You are on {}".format(current_floor))
+    print("You are in room. Inside the room is {}.".format(
+        player_floor[player_room]))
+    current_turn = input('What would you like to do? ').lower()
 
-        print("You {0} inside the room on {2}. Inside the room is {1}.".format(current_turn,
-                                                                               player_floor[player_room], current_floor))
-    elif (current_turn == 'straight'):
-        print("You go {0} inside the room on {2}. Inside the room is {1}.".format(current_turn,
-                                                                                  player_floor[player_room], current_floor))
-
-    else:
-        #print("You are on {}".format(current_floor))
-        print("You go {0} into a room on {2}. Inside the room is a {1}.".format(current_turn,
-                                                                                player_floor[player_room], current_floor))
-    current_turn = input(
-        'What would you like to do? (right, left, up, down, grab, fight or quit) ').lower()
-    clear()
     if current_turn == 'left':
         if player_room == 0:
             print("Can't move left. There is a wall there. ")
@@ -78,49 +66,39 @@ while player_alive and player_won == False:
                 current_floor = 'floor 3'
     elif current_turn == 'grab':
         if len(bookbag) >= 3:
-            print("Sorry your bookbag is full, you can't carry anymore items")
+            print("Sorry you're bookbag is full, you can't carry anymore items")
         else:
             if (player_floor[player_room] == 'sword') or (player_floor[player_room] == 'magic stones'):
                 bookbag.append(player_floor[player_room])
-                print("You performed a {0} and picked up a...{1}.".format(current_turn,
-                                                                          player_floor[player_room]))
+                print("You picked up a...{}.".format(
+                    player_floor[player_room]))
                 print("You have in your bookbag {}.".format(bookbag))
                 player_floor[player_room] = "nothing"
             else:
-                print("There is nothing to pick up")
-
+                print("Your bookbag is full, you can't pick up anymore items!")
     elif current_turn == "fight":
         if (player_floor[player_room] == "monster"):
             if 'sword' in bookbag:
-
                 print("You killed the monster")
                 player_floor[player_room] = "nothing"
                 bookbag.remove("sword")
                 print("You have in your bookbag {}.".format(bookbag))
-
             else:
                 print("The monster killed you")
                 player_alive = False
         elif (player_floor[player_room] == "boss"):
             if ('sword' in bookbag) and ('magic stones' in bookbag):
                 print("You killed the boss")
-
                 bookbag.remove("sword")
                 bookbag.remove("magic stones")
                 player_won = True
-            else:
-                print("The boss killed you")
-
-                player_alive = False
 
         else:
             print("Sorry, there is no monster in the room.")
-
     elif current_turn == "quit" or current_turn == "q":
         player_alive = False
     else:
         print("Sorry that is not a valid move. ")
-
 
 if (player_won):
     print("You did it. You won!!")
